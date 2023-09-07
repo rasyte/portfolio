@@ -1,0 +1,8 @@
+Flask==2.0.1
+Flask-Cors==3.0.10
+Flask-RESTful==0.3.8
+requests==2.27.0
+Jinja2==3.0.3
+markupsafe==2.1.1
+gunicorn==20.0.4
+
