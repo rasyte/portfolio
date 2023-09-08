@@ -75,6 +75,57 @@
         p {
             margin-bottom: 1em;
         }
+
+        .project-links a img {
+            width: 200px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .project-links a img:hover {
+            transform: scale(1.1);
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .project-link {
+            position: relative;
+            display: inline-block;
+        }
+
+        .project-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: rgb(255, 0, 0);
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .project-link:hover .project-text {
+            opacity: 1;
+        }
+
+        .project-link a img {
+            width: 200px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .project-link:hover a img {
+            transform: scale(1.1);
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+            opacity: 0.2;
+        }
+
+
     </style>
 </head>
 
@@ -93,8 +144,23 @@
 
     <!-- Welcome or brief introduction can be placed here if you wish -->
     <div class="container">
-        <h2>My Projects</h2>
-        <p>Here, you can explore more about my experiences, my skills, and the projects I've worked on. Please navigate using the links above to learn more!</p>
+        <div class="project-links">
+            <!-- Inside your .container div -->
+            <div class="project-links">
+                <div class="project-link">
+                    <a href="static/ipynbs/Rasiulyte_Assign3.html">
+                        <img src="static/images/suicide.jpg" alt="Suicide Rates Project">
+                        <span class="project-text">Suicide Rates Project</span>
+                    </a>
+                </div>
+                <div class="project-link">
+                    <a href="static/ipynbs/Rasiulyte_Assign4.html">
+                        <img src="static/images/titanic.jpg" alt="Titanic Survivors Project">
+                        <span class="project-text">Titanic Survivors Project</span>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
 </body>
