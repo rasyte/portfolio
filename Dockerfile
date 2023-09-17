@@ -13,6 +13,7 @@ COPY . /app
 
 # Expose the port the app runs on
 EXPOSE 80
+EXPOSE 443
 
 CMD ["gunicorn", "-b", "0.0.0.0:80", "app:app"]
 
