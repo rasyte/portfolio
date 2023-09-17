@@ -2,14 +2,14 @@
 setlocal
 
 :: Define variables
-set REPOSITORY=flaskapp
+set REPOSITORY=rrportfolioimages
 set REGISTRY_NAME=codebougiecontainers
 set REGISTRY_URL=codebougiecontainers.azurecr.io
 set IMAGE_NAME=%REGISTRY_URL%/%REPOSITORY%
 set TAG=latest
-set RESOURCE_GROUP=codebougieresources
-set APP_SERVICE_PLAN=codebougieappserviceplan
-set WEB_APP_NAME=codebougieweb
+set RESOURCE_GROUP=rrresources
+set APP_SERVICE_PLAN=rrappserviceplan
+set WEB_APP_NAME=rrportfolio
 
 echo Getting Azure Container Registry credentials...
 for /f "delims=" %%a in ('az acr credential show --name %REGISTRY_NAME% --query "username" --output tsv') do set USERNAME=%%a
