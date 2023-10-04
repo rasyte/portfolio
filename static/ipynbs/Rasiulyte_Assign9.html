@@ -14580,7 +14580,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Assignment-9s">Assignment 9s<a class="anchor-link" href="#Assignment-9s">&#182;</a></h4><h5 id="Applied-Machine-Learning">Applied Machine Learning<a class="anchor-link" href="#Applied-Machine-Learning">&#182;</a></h5>
+<h4 id="Project:-Analysis-of-Literary-Patterns-Using-Apriori">Project: Analysis of Literary Patterns Using Apriori<a class="anchor-link" href="#Project:-Analysis-of-Literary-Patterns-Using-Apriori">&#182;</a></h4>
 </div>
 </div>
 </div>
@@ -14591,28 +14591,11 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<ol>
-<li>In this assignment, we will use Apriori analysis to find phrases, or interesting
-patterns in a novel.
-Note that you are free to use any Apriori analytics and algorithm library in this assignment.
-Use the nltk library corpus gutenberg API and load the novel 'carroll-alice.txt' which is the 
-Alice in Wonderland by L. Carroll. There are 1703 sentences in the novel which can be 
-represented as 1703 transactions. Use any means to parse/extract words and save in CSV 
-format to be read by Weka framework similar to the Apriori Analysis module.
-Hint: Removing stop words and symbols using regular expressions can be helpful:
-from nltk.corpus import gutenberg, stopwords
-Stop_words = stopwords.words('english')
-Sentences = gutenberg.sents('carroll-alice.txt')<br>
-TermsSentences = []<br>
-for terms in Sentences:
-terms = [w for w in terms if w not in Stop_words]
-terms = [w for w in terms if re.search(r'^[a-zA-Z]{2}', w) is not None]<br>
-If Weka picked, use FPGrowth and start with default parameters. Reduce 
-lowerBoundMinSupport to reach to a sweet point for the support and avoid exploding the 
-number of rules generated.
-Report interesting patterns.
-(Example: Some of the frequently occurring phrases are Mock Turtle, White Rabbit, etc.</li>
-</ol>
+<p>Task: Analyze patterns in Lewis Carroll's "Alice in Wonderland" using the Apriori algorithm to identify frequently occurring phrases and interesting patterns.</p>
+<p>Data Source: Utilize the nltk library's Gutenberg corpus API to load 'carroll-alice.txt', representing "Alice in Wonderland" by L. Carroll.</p>
+<p>Data Representation: The novel contains 1703 sentences. Each sentence can be interpreted as a transaction, leading to a total of 1703 transactions.</p>
+<p>Data Preparation: Parse and extract words from these sentences. Save the extracted data in a CSV format compatible with the Weka framework.</p>
+<p>Reporting: Identify and document the patterns that emerge from the analysis.</p>
 
 </div>
 </div>
@@ -14629,14 +14612,20 @@ Report interesting patterns.
 <span class="kn">from</span> <span class="nn">mlxtend.preprocessing</span> <span class="kn">import</span> <span class="n">TransactionEncoder</span>
 <span class="kn">from</span> <span class="nn">mlxtend.frequent_patterns</span> <span class="kn">import</span> <span class="n">fpgrowth</span><span class="p">,</span> <span class="n">association_rules</span>
 
-<span class="c1"># constants</span>
+<span class="c1"># Constants</span>
 <span class="n">WORDS_PER_SET</span> <span class="o">=</span> <span class="mi">15</span>
 <span class="n">MIN_SUPPORT</span> <span class="o">=</span> <span class="mf">0.02</span>
 <span class="n">MIN_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.05</span>
 
 <span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    Function to read CSV file and return DataFrame.</span>
+<span class="sd">    Reads a CSV file and returns a DataFrame.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">    - file (str): File path of the CSV to read.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    - DataFrame: The loaded data or None in case of an error.</span>
 <span class="sd">    """</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
@@ -14647,15 +14636,27 @@ Report interesting patterns.
 
 <span class="k">def</span> <span class="nf">create_documents</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">words_per_set</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    Function to split words into sentences.</span>
-<span class="sd">    Words are split into groups of words_per_set.</span>
+<span class="sd">    Divides the words into sets of a given size.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">    - df (DataFrame): Input data.</span>
+<span class="sd">    - words_per_set (int): Number of words per set.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    - list: A list containing lists of words grouped by the specified number.</span>
 <span class="sd">    """</span>
     <span class="n">documents</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'Words'</span><span class="p">][</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">words_per_set</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'Words'</span><span class="p">]),</span> <span class="n">words_per_set</span><span class="p">)]</span>
     <span class="k">return</span> <span class="n">documents</span>
 
 <span class="k">def</span> <span class="nf">encode_transactions</span><span class="p">(</span><span class="n">documents</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    Function to encode transactions using TransactionEncoder.</span>
+<span class="sd">    Encodes the word sets using the TransactionEncoder.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">    - documents (list): The word sets.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    - DataFrame: A DataFrame representing encoded transactions.</span>
 <span class="sd">    """</span>
     <span class="n">te</span> <span class="o">=</span> <span class="n">TransactionEncoder</span><span class="p">()</span>
     <span class="n">te_ary</span> <span class="o">=</span> <span class="n">te</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">documents</span><span class="p">)</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">documents</span><span class="p">)</span>
@@ -14664,7 +14665,15 @@ Report interesting patterns.
 
 <span class="k">def</span> <span class="nf">apply_fp_growth</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">min_support</span><span class="p">,</span> <span class="n">min_threshold</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    Function to apply FP-Growth algorithm and compute association rules.</span>
+<span class="sd">    Applies the FP-Growth algorithm and computes association rules.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">    - df (DataFrame): Encoded transactions.</span>
+<span class="sd">    - min_support (float): The minimum support for the frequent itemsets.</span>
+<span class="sd">    - min_threshold (float): The minimum threshold for the association rules.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    - DataFrame, int: The frequent itemsets and the number of association rules.</span>
 <span class="sd">    """</span>
     <span class="n">frequent_itemsets</span> <span class="o">=</span> <span class="n">fpgrowth</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">min_support</span><span class="o">=</span><span class="n">min_support</span><span class="p">,</span> <span class="n">use_colnames</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">frequent_itemsets</span> <span class="o">=</span> <span class="n">frequent_itemsets</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'support'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -14672,7 +14681,9 @@ Report interesting patterns.
     <span class="k">return</span> <span class="n">frequent_itemsets</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">rules</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># Set pandas option to display all rows</span>
     <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">'display.max_rows'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    
     <span class="n">df</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="s1">'alice_words.csv'</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -14711,7 +14722,7 @@ Report interesting patterns.
       support                     itemsets
 0    0.430845                      (alice)
 51   0.421053                       (said)
-169  0.227662                (alice, said)
+169  0.227662                (said, alice)
 66   0.150551                     (little)
 46   0.121175                        (one)
 63   0.097919                       (know)
@@ -14749,11 +14760,11 @@ Report interesting patterns.
 61   0.055080                        (got)
 24   0.055080                     (looked)
 27   0.053856                      (never)
-178  0.053856              (alice, little)
+178  0.053856              (little, alice)
 19   0.052632                         (oh)
 2    0.052632                        (get)
 179  0.051408               (said, little)
-162  0.051408                (alice, like)
+162  0.051408                (like, alice)
 53   0.051408                       (must)
 175  0.050184                (alice, know)
 107  0.047736                       (tone)
@@ -14767,24 +14778,24 @@ Report interesting patterns.
 73   0.044064                      (mouse)
 122  0.042840                   (dormouse)
 138  0.042840                 (well, said)
-137  0.041616                (alice, well)
-160  0.041616                (alice, went)
+137  0.041616                (well, alice)
+160  0.041616                (went, alice)
 212  0.040392                 (said, mock)
 111  0.040392                       (last)
 31   0.040392                      (large)
-168  0.039168                  (one, said)
+168  0.039168                  (said, one)
 4    0.039168                    (nothing)
-201  0.039168                (said, queen)
+201  0.039168                (queen, said)
 109  0.039168                    (looking)
 58   0.039168                      (right)
-203  0.039168               (hatter, said)
-208  0.039168               (turtle, said)
+203  0.039168               (said, hatter)
+208  0.039168               (said, turtle)
 81   0.039168                       (long)
 214  0.039168         (turtle, said, mock)
 32   0.037944                     (moment)
 167  0.037944                 (alice, one)
 48   0.037944                        (put)
-177  0.036720          (alice, said, know)
+177  0.036720          (said, alice, know)
 77   0.036720                       (tell)
 135  0.036720               (alice, could)
 71   0.036720                        (cat)
@@ -14796,26 +14807,26 @@ Report interesting patterns.
 38   0.034272                       (next)
 13   0.034272                      (white)
 36   0.034272                      (found)
-141  0.034272                (would, said)
+141  0.034272                (said, would)
 85   0.034272                      (three)
 102  0.034272                      (heard)
-146  0.034272                (alice, much)
+146  0.034272                (much, alice)
 40   0.033048                       (look)
 120  0.033048                      (march)
 39   0.033048                      (going)
-161  0.033048                 (said, went)
-158  0.033048                  (see, said)
+161  0.033048                 (went, said)
+158  0.033048                  (said, see)
 84   0.033048                       (door)
 20   0.033048                       (dear)
 148  0.033048                 (alice, say)
-200  0.031824               (alice, queen)
+200  0.031824               (queen, alice)
 90   0.031824                       (poor)
 10   0.031824                        (day)
 187  0.031824                   (go, said)
 140  0.031824               (alice, would)
 121  0.031824                       (hare)
 45   0.031824                       (upon)
-205  0.031824                (march, hare)
+205  0.031824                (hare, march)
 25   0.031824                     (seemed)
 59   0.030600                       (good)
 143  0.030600               (alice, think)
@@ -14829,73 +14840,73 @@ Report interesting patterns.
 74   0.030600                      (might)
 5    0.030600                    (without)
 82   0.030600                       (away)
-173  0.029376               (alice, began)
-153  0.029376               (alice, quite)
-149  0.029376                  (say, said)
-139  0.029376          (alice, well, said)
+173  0.029376               (began, alice)
+153  0.029376               (quite, alice)
+149  0.029376                  (said, say)
+139  0.029376          (well, said, alice)
 26   0.029376                       (took)
-166  0.029376                (first, said)
-170  0.029376                 (come, said)
+166  0.029376                (said, first)
+170  0.029376                 (said, come)
 171  0.029376                (alice, come)
 165  0.029376               (alice, first)
-180  0.029376        (alice, said, little)
-192  0.029376                 (tone, said)
+180  0.029376        (said, little, alice)
+192  0.029376                 (said, tone)
 101  0.029376                       (sure)
 145  0.028152                 (alice, way)
 209  0.028152              (alice, turtle)
 115  0.028152                      (added)
 154  0.028152              (alice, looked)
 218  0.028152              (said, gryphon)
-215  0.028152        (alice, turtle, mock)
+215  0.028152        (turtle, alice, mock)
 213  0.028152                (alice, mock)
-144  0.028152                (think, said)
-142  0.028152              (white, rabbit)
+144  0.028152                (said, think)
+142  0.028152              (rabbit, white)
 191  0.028152                (said, voice)
 108  0.028152                        (yet)
 151  0.026928                 (time, said)
-164  0.026928          (alice, said, like)
+164  0.026928          (said, like, alice)
 197  0.026928              (said, replied)
 116  0.026928                       (jury)
 117  0.026928                (caterpillar)
 155  0.026928               (alice, never)
 14   0.026928                    (getting)
-206  0.026928             (dormouse, said)
+206  0.026928             (said, dormouse)
 92   0.026928                       (half)
 76   0.026928                       (felt)
 56   0.026928                        (let)
-186  0.026928                  (alice, go)
+186  0.026928                  (go, alice)
 33   0.026928                    (another)
-147  0.026928                 (said, much)
+147  0.026928                 (much, said)
 130  0.026928                 (alice, get)
-190  0.026928              (said, duchess)
-219  0.025704            (turtle, gryphon)
-189  0.025704                (said, thing)
+190  0.026928              (duchess, said)
+219  0.025704            (gryphon, turtle)
+189  0.025704                (thing, said)
 62   0.025704                      (words)
 78   0.025704                       (ever)
-133  0.025704             (alice, nothing)
+133  0.025704             (nothing, alice)
 98   0.025704                     (minute)
 96   0.024480                      (cried)
 42   0.024480                   (anything)
-220  0.024480              (mock, gryphon)
+220  0.024480              (gryphon, mock)
 57   0.024480                       (sort)
 75   0.024480                       (wish)
 87   0.024480                    (however)
 93   0.024480                       (find)
 193  0.024480                (alice, tone)
 182  0.024480                  (cat, said)
-181  0.024480                 (alice, cat)
-222  0.024480      (turtle, mock, gryphon)
+181  0.024480                 (cat, alice)
+222  0.024480      (mock, gryphon, turtle)
 28   0.024480                       (take)
-174  0.024480                 (alice, got)
-136  0.024480                (could, said)
+174  0.024480                 (got, alice)
+136  0.024480                (said, could)
 172  0.024480                 (said, must)
 65   0.023256                     (please)
-134  0.023256              (nothing, said)
+134  0.023256              (said, nothing)
 105  0.023256                       (till)
 156  0.023256                (said, never)
-132  0.023256              (thought, said)
+132  0.023256              (said, thought)
 198  0.023256             (alice, replied)
-204  0.023256              (alice, hatter)
+204  0.023256              (hatter, alice)
 49   0.023256                       (even)
 112  0.022032                        (old)
 159  0.022032              (alice, moment)
@@ -14903,19 +14914,19 @@ Report interesting patterns.
 196  0.022032                 (said, last)
 6    0.022032                        (use)
 79   0.022032                       (hand)
-216  0.022032          (alice, said, mock)
-129  0.022032               (said, rabbit)
-195  0.022032               (course, said)
-194  0.022032                  (yet, said)
-217  0.022032  (alice, turtle, said, mock)
-188  0.022032               (alice, thing)
+216  0.022032          (said, alice, mock)
+129  0.022032               (rabbit, said)
+195  0.022032               (said, course)
+194  0.022032                  (said, yet)
+217  0.022032  (turtle, said, alice, mock)
+188  0.022032               (thing, alice)
 43   0.022032                     (wonder)
 185  0.022032                (alice, head)
-152  0.022032                (alice, time)
+152  0.022032                (time, alice)
 183  0.022032               (alice, mouse)
-128  0.022032              (alice, rabbit)
+128  0.022032              (rabbit, alice)
 106  0.022032                  (something)
-210  0.022032        (alice, said, turtle)
+210  0.022032        (said, alice, turtle)
 69   0.020808                    (perhaps)
 67   0.020808                      (spoke)
 70   0.020808                    (talking)
@@ -14924,14 +14935,14 @@ Report interesting patterns.
 86   0.020808                      (table)
 54   0.020808                        (end)
 50   0.020808                      (house)
-202  0.020808         (alice, said, queen)
+202  0.020808         (queen, said, alice)
 94   0.020808                    (curious)
 97   0.020808                        (sat)
 100  0.020808                     (enough)
 44   0.020808                      (tried)
-184  0.020808                (alice, tell)
+184  0.020808                (tell, alice)
 127  0.020808                      (court)
-199  0.020808         (alice, caterpillar)
+199  0.020808         (caterpillar, alice)
 Number of rules: 18
 </pre>
 </div>
@@ -14949,11 +14960,7 @@ Number of rules: 18
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">mlxtend.preprocessing</span> <span class="kn">import</span> <span class="n">TransactionEncoder</span>
-<span class="kn">from</span> <span class="nn">mlxtend.frequent_patterns</span> <span class="kn">import</span> <span class="n">fpgrowth</span><span class="p">,</span> <span class="n">association_rules</span>
-
-<span class="c1"># Constants</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Constants</span>
 <span class="n">MIN_SUPPORT</span> <span class="o">=</span> <span class="mf">0.01</span>
 <span class="n">MIN_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.01</span>
 
@@ -15018,216 +15025,216 @@ Number of rules: 18
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
 <pre>        antecedents     consequents  antecedent support  consequent support  \
-0           (alice)          (said)            0.231242            0.277983   
-1            (said)         (alice)            0.277983            0.231242   
+0            (said)         (alice)            0.277983            0.231242   
+1           (alice)          (said)            0.231242            0.277983   
 2           (alice)       (thought)            0.231242            0.045510   
 3         (thought)         (alice)            0.045510            0.231242   
 4           (alice)           (get)            0.231242            0.027060   
 5             (get)         (alice)            0.027060            0.231242   
 6           (alice)         (could)            0.231242            0.043665   
 7           (could)         (alice)            0.043665            0.231242   
-8           (could)          (said)            0.043665            0.277983   
-9            (said)         (could)            0.277983            0.043665   
+8            (said)         (could)            0.277983            0.043665   
+9           (could)          (said)            0.043665            0.277983   
 10          (alice)         (would)            0.231242            0.043050   
 11          (would)         (alice)            0.043050            0.231242   
-12          (would)          (said)            0.043050            0.277983   
-13           (said)         (would)            0.277983            0.043050   
-14          (alice)          (well)            0.231242            0.036900   
-15           (well)         (alice)            0.036900            0.231242   
+12           (said)         (would)            0.277983            0.043050   
+13          (would)          (said)            0.043050            0.277983   
+14           (well)         (alice)            0.036900            0.231242   
+15          (alice)          (well)            0.231242            0.036900   
 16           (well)          (said)            0.036900            0.277983   
 17           (said)          (well)            0.277983            0.036900   
-18          (white)        (rabbit)            0.017835            0.023985   
-19         (rabbit)         (white)            0.023985            0.017835   
+18         (rabbit)         (white)            0.023985            0.017835   
+19          (white)        (rabbit)            0.017835            0.023985   
 20          (alice)         (think)            0.231242            0.032595   
 21          (think)         (alice)            0.032595            0.231242   
-22          (think)          (said)            0.032595            0.277983   
-23           (said)         (think)            0.277983            0.032595   
-24          (alice)          (much)            0.231242            0.030750   
-25           (much)         (alice)            0.030750            0.231242   
-26           (said)          (much)            0.277983            0.030750   
-27           (much)          (said)            0.030750            0.277983   
+22           (said)         (think)            0.277983            0.032595   
+23          (think)          (said)            0.032595            0.277983   
+24           (much)         (alice)            0.030750            0.231242   
+25          (alice)          (much)            0.231242            0.030750   
+26           (much)          (said)            0.030750            0.277983   
+27           (said)          (much)            0.277983            0.030750   
 28          (alice)           (say)            0.231242            0.030750   
 29            (say)         (alice)            0.030750            0.231242   
 30          (alice)           (way)            0.231242            0.028905   
 31            (way)         (alice)            0.028905            0.231242   
-32          (alice)          (time)            0.231242            0.039975   
-33           (time)         (alice)            0.039975            0.231242   
+32           (time)         (alice)            0.039975            0.231242   
+33          (alice)          (time)            0.231242            0.039975   
 34           (time)          (said)            0.039975            0.277983   
 35           (said)          (time)            0.277983            0.039975   
 36            (see)         (alice)            0.039360            0.231242   
 37          (alice)           (see)            0.231242            0.039360   
-38            (see)          (said)            0.039360            0.277983   
-39           (said)           (see)            0.277983            0.039360   
-40          (alice)         (quite)            0.231242            0.030750   
-41          (quite)         (alice)            0.030750            0.231242   
-42         (looked)         (alice)            0.026445            0.231242   
-43          (alice)        (looked)            0.231242            0.026445   
-44          (alice)          (went)            0.231242            0.049815   
-45           (went)         (alice)            0.049815            0.231242   
-46           (said)          (went)            0.277983            0.049815   
-47           (went)          (said)            0.049815            0.277983   
-48          (alice)          (like)            0.231242            0.050431   
-49           (like)         (alice)            0.050431            0.231242   
+38           (said)           (see)            0.277983            0.039360   
+39            (see)          (said)            0.039360            0.277983   
+40          (quite)         (alice)            0.030750            0.231242   
+41          (alice)         (quite)            0.231242            0.030750   
+42          (alice)        (looked)            0.231242            0.026445   
+43         (looked)         (alice)            0.026445            0.231242   
+44           (went)         (alice)            0.049815            0.231242   
+45          (alice)          (went)            0.231242            0.049815   
+46           (went)          (said)            0.049815            0.277983   
+47           (said)          (went)            0.277983            0.049815   
+48           (like)         (alice)            0.050431            0.231242   
+49          (alice)          (like)            0.231242            0.050431   
 50           (said)          (like)            0.277983            0.050431   
 51           (like)          (said)            0.050431            0.277983   
-52          (first)          (said)            0.029520            0.277983   
-53           (said)         (first)            0.277983            0.029520   
+52           (said)         (first)            0.277983            0.029520   
+53          (first)          (said)            0.029520            0.277983   
 54          (alice)           (one)            0.231242            0.058426   
 55            (one)         (alice)            0.058426            0.231242   
-56            (one)          (said)            0.058426            0.277983   
-57           (said)           (one)            0.277983            0.058426   
-58          (alice)           (got)            0.231242            0.027060   
-59            (got)         (alice)            0.027060            0.231242   
-60          (alice)         (began)            0.231242            0.035055   
-61          (began)         (alice)            0.035055            0.231242   
+56           (said)           (one)            0.277983            0.058426   
+57            (one)          (said)            0.058426            0.277983   
+58            (got)         (alice)            0.027060            0.231242   
+59          (alice)           (got)            0.231242            0.027060   
+60          (began)         (alice)            0.035055            0.231242   
+61          (alice)         (began)            0.231242            0.035055   
 62           (said)          (know)            0.277983            0.049815   
 63           (know)          (said)            0.049815            0.277983   
 64          (alice)          (know)            0.231242            0.049815   
 65           (know)         (alice)            0.049815            0.231242   
-66          (alice)        (little)            0.231242            0.070111   
-67         (little)         (alice)            0.070111            0.231242   
+66         (little)         (alice)            0.070111            0.231242   
+67          (alice)        (little)            0.231242            0.070111   
 68           (said)        (little)            0.277983            0.070111   
 69         (little)          (said)            0.070111            0.277983   
 70           (said)           (cat)            0.277983            0.020910   
 71            (cat)          (said)            0.020910            0.277983   
-72          (alice)         (round)            0.231242            0.024600   
-73          (round)         (alice)            0.024600            0.231242   
-74           (dont)          (said)            0.035055            0.277983   
-75           (said)          (dont)            0.277983            0.035055   
+72          (round)         (alice)            0.024600            0.231242   
+73          (alice)         (round)            0.231242            0.024600   
+74           (said)          (dont)            0.277983            0.035055   
+75           (dont)          (said)            0.035055            0.277983   
 76          (alice)          (dont)            0.231242            0.035055   
 77           (dont)         (alice)            0.035055            0.231242   
-78           (said)       (duchess)            0.277983            0.023370   
-79        (duchess)          (said)            0.023370            0.277983   
+78        (duchess)          (said)            0.023370            0.277983   
+79           (said)       (duchess)            0.277983            0.023370   
 80           (said)         (voice)            0.277983            0.028905   
 81          (voice)          (said)            0.028905            0.277983   
-82           (tone)          (said)            0.024600            0.277983   
-83           (said)          (tone)            0.277983            0.024600   
-84           (said)   (caterpillar)            0.277983            0.015375   
-85    (caterpillar)          (said)            0.015375            0.277983   
-86           (said)         (queen)            0.277983            0.041205   
-87          (queen)          (said)            0.041205            0.277983   
-88         (hatter)          (said)            0.033825            0.277983   
-89           (said)        (hatter)            0.277983            0.033825   
-90          (march)          (hare)            0.019065            0.018450   
-91           (hare)         (march)            0.018450            0.019065   
+82           (said)          (tone)            0.277983            0.024600   
+83           (tone)          (said)            0.024600            0.277983   
+84    (caterpillar)          (said)            0.015375            0.277983   
+85           (said)   (caterpillar)            0.277983            0.015375   
+86          (queen)          (said)            0.041205            0.277983   
+87           (said)         (queen)            0.277983            0.041205   
+88           (said)        (hatter)            0.277983            0.033825   
+89         (hatter)          (said)            0.033825            0.277983   
+90           (hare)         (march)            0.018450            0.019065   
+91          (march)          (hare)            0.019065            0.018450   
 92           (said)          (king)            0.277983            0.036285   
 93           (king)          (said)            0.036285            0.277983   
 94           (said)          (mock)            0.277983            0.034440   
 95           (mock)          (said)            0.034440            0.277983   
 96         (turtle)          (mock)            0.033825            0.034440   
 97           (mock)        (turtle)            0.034440            0.033825   
-98         (turtle)          (said)            0.033825            0.277983   
-99           (said)        (turtle)            0.277983            0.033825   
-100  (turtle, said)          (mock)            0.020295            0.034440   
-101  (turtle, mock)          (said)            0.033210            0.277983   
+98           (said)        (turtle)            0.277983            0.033825   
+99         (turtle)          (said)            0.033825            0.277983   
+100  (said, turtle)          (mock)            0.020295            0.034440   
+101  (mock, turtle)          (said)            0.033210            0.277983   
 102    (said, mock)        (turtle)            0.020295            0.033825   
 103        (turtle)    (said, mock)            0.033825            0.020295   
-104          (said)  (turtle, mock)            0.277983            0.033210   
-105          (mock)  (turtle, said)            0.034440            0.020295   
+104          (said)  (mock, turtle)            0.277983            0.033210   
+105          (mock)  (said, turtle)            0.034440            0.020295   
 106          (said)       (gryphon)            0.277983            0.033210   
 107       (gryphon)          (said)            0.033210            0.277983   
 
       support  confidence       lift  leverage  conviction  zhangs_metric  
-0    0.100861    0.436170   1.569055  0.036580    1.280559       0.471766  
-1    0.100861    0.362832   1.569055  0.036580    1.206522       0.502306  
+0    0.100861    0.362832   1.569055  0.036580    1.206522       0.502306  
+1    0.100861    0.436170   1.569055  0.036580    1.280559       0.471766  
 2    0.035055    0.151596   3.331009  0.024531    1.125041       0.910288  
 3    0.035055    0.770270   3.331009  0.024531    3.346357       0.733157  
 4    0.011685    0.050532   1.867384  0.005428    1.024721       0.604211  
 5    0.011685    0.431818   1.867384  0.005428    1.353014       0.477410  
 6    0.018450    0.079787   1.827240  0.008353    1.039254       0.588907  
 7    0.018450    0.422535   1.827240  0.008353    1.331263       0.473398  
-8    0.010455    0.239437   0.861336 -0.001683    0.949319      -0.144083  
-9    0.010455    0.037611   0.861336 -0.001683    0.993709      -0.182317  
+8    0.010455    0.037611   0.861336 -0.001683    0.993709      -0.182317  
+9    0.010455    0.239437   0.861336 -0.001683    0.949319      -0.144083  
 10   0.017835    0.077128   1.791565  0.007880    1.036925       0.574731  
 11   0.017835    0.414286   1.791565  0.007880    1.312513       0.461706  
-12   0.015990    0.371429   1.336157  0.004023    1.148664       0.262903  
-13   0.015990    0.057522   1.336157  0.004023    1.015355       0.348447  
-14   0.014760    0.063830   1.729787  0.006227    1.028766       0.548800  
-15   0.014760    0.400000   1.729787  0.006227    1.281263       0.438059  
+12   0.015990    0.057522   1.336157  0.004023    1.015355       0.348447  
+13   0.015990    0.371429   1.336157  0.004023    1.148664       0.262903  
+14   0.014760    0.400000   1.729787  0.006227    1.281263       0.438059  
+15   0.014760    0.063830   1.729787  0.006227    1.028766       0.548800  
 16   0.012915    0.350000   1.259071  0.002657    1.110796       0.213647  
 17   0.012915    0.046460   1.259071  0.002657    1.010026       0.284984  
-18   0.014145    0.793103  33.066313  0.013717    4.717405       0.987368  
-19   0.014145    0.589744  33.066313  0.013717    2.394027       0.993589  
+18   0.014145    0.589744  33.066313  0.013717    2.394027       0.993589  
+19   0.014145    0.793103  33.066313  0.013717    4.717405       0.987368  
 20   0.014760    0.063830   1.958250  0.007223    1.033364       0.636533  
 21   0.014760    0.452830   1.958250  0.007223    1.404971       0.505828  
-22   0.010455    0.320755   1.153865  0.001394    1.062970       0.137841  
-23   0.010455    0.037611   1.153865  0.001394    1.005211       0.184688  
-24   0.016605    0.071809   2.335213  0.009494    1.044235       0.743763  
-25   0.016605    0.540000   2.335213  0.009494    1.671212       0.589914  
-26   0.012915    0.046460   1.510885  0.004367    1.016475       0.468322  
-27   0.012915    0.420000   1.510885  0.004367    1.244857       0.348864  
+22   0.010455    0.037611   1.153865  0.001394    1.005211       0.184688  
+23   0.010455    0.320755   1.153865  0.001394    1.062970       0.137841  
+24   0.016605    0.540000   2.335213  0.009494    1.671212       0.589914  
+25   0.016605    0.071809   2.335213  0.009494    1.044235       0.743763  
+26   0.012915    0.420000   1.510885  0.004367    1.244857       0.348864  
+27   0.012915    0.046460   1.510885  0.004367    1.016475       0.468322  
 28   0.012915    0.055851   1.816277  0.005804    1.026586       0.584610  
 29   0.012915    0.420000   1.816277  0.005804    1.325444       0.463681  
 30   0.013530    0.058511   2.024219  0.006846    1.031445       0.658182  
 31   0.013530    0.468085   2.024219  0.006846    1.445264       0.521043  
-32   0.012300    0.053191   1.330606  0.003056    1.013959       0.323200  
-33   0.012300    0.307692   1.330606  0.003056    1.110428       0.258808  
+32   0.012300    0.307692   1.330606  0.003056    1.110428       0.258808  
+33   0.012300    0.053191   1.330606  0.003056    1.013959       0.323200  
 34   0.010455    0.261538   0.940844 -0.000657    0.977732      -0.061468  
 35   0.010455    0.037611   0.940844 -0.000657    0.997543      -0.080107  
 36   0.013530    0.343750   1.486536  0.004428    1.171440       0.340705  
 37   0.013530    0.058511   1.486536  0.004428    1.020340       0.425745  
-38   0.010455    0.265625   0.955545 -0.000486    0.983172      -0.046193  
-39   0.010455    0.037611   0.955545 -0.000486    0.998182      -0.060535  
-40   0.015375    0.066489   2.162234  0.008264    1.038285       0.699200  
-41   0.015375    0.500000   2.162234  0.008264    1.537515       0.554569  
-42   0.014145    0.534884   2.313088  0.008030    1.652829       0.583098  
-43   0.014145    0.061170   2.313088  0.008030    1.036987       0.738435  
-44   0.018450    0.079787   1.601655  0.006931    1.032570       0.488640  
-45   0.018450    0.370370   1.601655  0.006931    1.220968       0.395340  
-46   0.011070    0.039823   0.799410 -0.002778    0.989593      -0.257901  
-47   0.011070    0.222222   0.799410 -0.002778    0.928308      -0.208909  
-48   0.020295    0.087766   1.740335  0.008634    1.040927       0.553358  
-49   0.020295    0.402439   1.740335  0.008634    1.286492       0.447990  
+38   0.010455    0.037611   0.955545 -0.000486    0.998182      -0.060535  
+39   0.010455    0.265625   0.955545 -0.000486    0.983172      -0.046193  
+40   0.015375    0.500000   2.162234  0.008264    1.537515       0.554569  
+41   0.015375    0.066489   2.162234  0.008264    1.038285       0.699200  
+42   0.014145    0.061170   2.313088  0.008030    1.036987       0.738435  
+43   0.014145    0.534884   2.313088  0.008030    1.652829       0.583098  
+44   0.018450    0.370370   1.601655  0.006931    1.220968       0.395340  
+45   0.018450    0.079787   1.601655  0.006931    1.032570       0.488640  
+46   0.011070    0.222222   0.799410 -0.002778    0.928308      -0.208909  
+47   0.011070    0.039823   0.799410 -0.002778    0.989593      -0.257901  
+48   0.020295    0.402439   1.740335  0.008634    1.286492       0.447990  
+49   0.020295    0.087766   1.740335  0.008634    1.040927       0.553358  
 50   0.014760    0.053097   1.052882  0.000741    1.002816       0.069563  
 51   0.014760    0.292683   1.052882  0.000741    1.020783       0.052893  
-52   0.010455    0.354167   1.274060  0.002249    1.117962       0.221651  
-53   0.010455    0.037611   1.274060  0.002249    1.008406       0.297926  
+52   0.010455    0.037611   1.274060  0.002249    1.008406       0.297926  
+53   0.010455    0.354167   1.274060  0.002249    1.117962       0.221651  
 54   0.014145    0.061170   1.046976  0.000635    1.002923       0.058365  
 55   0.014145    0.242105   1.046976  0.000635    1.014333       0.047653  
-56   0.012915    0.221053   0.795203 -0.003326    0.926914      -0.214776  
-57   0.012915    0.046460   0.795203 -0.003326    0.987452      -0.262916  
-58   0.010455    0.045213   1.670817  0.004198    1.019012       0.522259  
-59   0.010455    0.386364   1.670817  0.004198    1.252790       0.412657  
-60   0.012300    0.053191   1.517357  0.004194    1.019155       0.443520  
-61   0.012300    0.350877   1.517357  0.004194    1.184302       0.353346  
+56   0.012915    0.046460   0.795203 -0.003326    0.987452      -0.262916  
+57   0.012915    0.221053   0.795203 -0.003326    0.926914      -0.214776  
+58   0.010455    0.386364   1.670817  0.004198    1.252790       0.412657  
+59   0.010455    0.045213   1.670817  0.004198    1.019012       0.522259  
+60   0.012300    0.350877   1.517357  0.004194    1.184302       0.353346  
+61   0.012300    0.053191   1.517357  0.004194    1.019155       0.443520  
 62   0.015375    0.055310   1.110292  0.001527    1.005816       0.137581  
 63   0.015375    0.308642   1.110292  0.001527    1.044346       0.104544  
 64   0.014145    0.061170   1.227935  0.002626    1.012095       0.241461  
 65   0.014145    0.283951   1.227935  0.002626    1.073610       0.195357  
-66   0.021525    0.093085   1.327688  0.005313    1.025332       0.321051  
-67   0.021525    0.307018   1.327688  0.005313    1.109347       0.265420  
+66   0.021525    0.307018   1.327688  0.005313    1.109347       0.265420  
+67   0.021525    0.093085   1.327688  0.005313    1.025332       0.321051  
 68   0.017835    0.064159   0.915114 -0.001654    0.993641      -0.113847  
 69   0.017835    0.254386   0.915114 -0.001654    0.968353      -0.090705  
 70   0.012915    0.046460   2.221890  0.007102    1.026795       0.761661  
 71   0.012915    0.617647   2.221890  0.007102    1.888353       0.561677  
-72   0.010455    0.045213   1.837899  0.004766    1.021589       0.593035  
-73   0.010455    0.425000   1.837899  0.004766    1.336970       0.467399  
-74   0.017220    0.491228   1.767117  0.007475    1.419137       0.449877  
-75   0.017220    0.061947   1.767117  0.007475    1.028667       0.601241  
+72   0.010455    0.425000   1.837899  0.004766    1.336970       0.467399  
+73   0.010455    0.045213   1.837899  0.004766    1.021589       0.593035  
+74   0.017220    0.061947   1.767117  0.007475    1.028667       0.601241  
+75   0.017220    0.491228   1.767117  0.007475    1.419137       0.449877  
 76   0.012915    0.055851   1.593225  0.004809    1.022026       0.484343  
 77   0.012915    0.368421   1.593225  0.004809    1.217200       0.385869  
-78   0.012300    0.044248   1.893340  0.005804    1.021844       0.653492  
-79   0.012300    0.526316   1.893340  0.005804    1.524259       0.483123  
+78   0.012300    0.526316   1.893340  0.005804    1.524259       0.483123  
+79   0.012300    0.044248   1.893340  0.005804    1.021844       0.653492  
 80   0.010455    0.037611   1.301167  0.002420    1.009046       0.320573  
 81   0.010455    0.361702   1.301167  0.002420    1.131160       0.238349  
-82   0.012300    0.500000   1.798673  0.005462    1.444034       0.455233  
-83   0.012300    0.044248   1.798673  0.005462    1.020557       0.614991  
-84   0.011685    0.042035   2.733982  0.007411    1.027830       0.878418  
-85   0.011685    0.760000   2.733982  0.007411    3.008405       0.644137  
-86   0.015990    0.057522   1.395985  0.004536    1.017313       0.392871  
-87   0.015990    0.388060   1.395985  0.004536    1.179882       0.295850  
-88   0.017835    0.527273   1.896782  0.008432    1.527344       0.489343  
-89   0.017835    0.064159   1.896782  0.008432    1.032414       0.654820  
-90   0.018450    0.967742  52.451613  0.018098   30.428044       1.000000  
-91   0.018450    1.000000  52.451613  0.018098         inf       0.999373  
+82   0.012300    0.044248   1.798673  0.005462    1.020557       0.614991  
+83   0.012300    0.500000   1.798673  0.005462    1.444034       0.455233  
+84   0.011685    0.760000   2.733982  0.007411    3.008405       0.644137  
+85   0.011685    0.042035   2.733982  0.007411    1.027830       0.878418  
+86   0.015990    0.388060   1.395985  0.004536    1.179882       0.295850  
+87   0.015990    0.057522   1.395985  0.004536    1.017313       0.392871  
+88   0.017835    0.064159   1.896782  0.008432    1.032414       0.654820  
+89   0.017835    0.527273   1.896782  0.008432    1.527344       0.489343  
+90   0.018450    1.000000  52.451613  0.018098         inf       0.999373  
+91   0.018450    0.967742  52.451613  0.018098   30.428044       1.000000  
 92   0.027060    0.097345   2.682766  0.016974    1.067645       0.868747  
 93   0.027060    0.745763   2.682766  0.016974    2.839934       0.650867  
 94   0.020295    0.073009   2.119864  0.010721    1.041606       0.731661  
 95   0.020295    0.589286   2.119864  0.010721    1.757955       0.547114  
 96   0.033210    0.981818  28.507792  0.032045   53.105781       0.998703  
 97   0.033210    0.964286  28.507792  0.032045   27.052891       0.999339  
-98   0.020295    0.600000   2.158407  0.010892    1.805043       0.555485  
-99   0.020295    0.073009   2.158407  0.010892    1.042270       0.743328  
+98   0.020295    0.073009   2.158407  0.010892    1.042270       0.743328  
+99   0.020295    0.600000   2.158407  0.010892    1.805043       0.555485  
 100  0.020295    1.000000  29.035714  0.019596         inf       0.985562  
 101  0.020295    0.611111   2.198378  0.011063    1.856616       0.563845  
 102  0.020295    1.000000  29.563636  0.019609         inf       0.986190  
@@ -15251,24 +15258,23 @@ Number of rules: 18
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<ol>
-<li>In the lecture module, the class NeuralNetMLP is a single hidden layer neural<br>
-network implementation. Make the necessary modifications to upgrade it to a 2 hidden<br>
-layer network. Run it on the MNIST dataset and report its performance.<br>
-(Hint: Raschka, Chapter 12  </li>
-</ol>
+<h4 id="Summary-of-the-FP-Growth-Association-Rules-Project">Summary of the FP-Growth Association Rules Project<a class="anchor-link" href="#Summary-of-the-FP-Growth-Association-Rules-Project">&#182;</a></h4><h5 id="Project-Objective">Project Objective<a class="anchor-link" href="#Project-Objective">&#182;</a></h5><p>The main goal of this project was to derive association rules from a dataset using the FP-Growth algorithm. By analyzing these rules, one can uncover patterns or relationships between items in large datasets, which in this context refers to transactions from the 'alice_transactions.csv' file.</p>
+<h5 id="Design-&amp;-Implementation-Decisions">Design &amp; Implementation Decisions<a class="anchor-link" href="#Design-&amp;-Implementation-Decisions">&#182;</a></h5><p>Why FP-Growth?
+FP-Growth was chosen due to its efficiency in generating frequent itemsets without candidate generation. It's an improvement over the traditional Apriori algorithm and is particularly useful for larger datasets.</p>
+<p>Reading Data:
+Instead of using a dedicated CSV reader, the script reads the CSV file line by line, converting each line into a list of items (a transaction). This design decision simplifies the process and avoids any potential complications with dataframes at this stage.</p>
+<p>Data Encoding: 
+The TransactionEncoder from the mlxtend library was used to convert transaction data into a binary format suitable for the FP-Growth algorithm. This design streamlines the data preprocessing step and ensures compatibility with the library's FP-Growth implementation.</p>
+<p>Constants: 
+Constants like MIN_SUPPORT and MIN_THRESHOLD were defined at the beginning of the script to provide easy configurability. By adjusting these values, users can fine-tune the specificity and breadth of derived rules.</p>
+<p>Error Handling: 
+Explicit error handling was incorporated for file reading operations to provide clarity in case the specified file isn't found or isn't accessible. This enhances user experience by offering meaningful error messages.</p>
+<h5 id="Technologies-Used">Technologies Used<a class="anchor-link" href="#Technologies-Used">&#182;</a></h5><p>Python: Chosen for its ease of use, extensive libraries, and widespread popularity in data analysis tasks.</p>
+<p>Pandas: A powerful data manipulation library for Python. It was primarily used in this project to handle and manipulate transaction data once encoded.</p>
+<p>mlxtend: An extension of Python's machine learning libraries. The mlxtend.preprocessing.TransactionEncoder was used to prepare the data, and mlxtend.frequent_patterns provided the FP-Growth and association rules functionalities.</p>
+<p>Logging: Python's built-in logging module was incorporated to capture and report errors, especially around file handling.</p>
+<h5 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h5><p>The project successfully implements an association rule analysis using the FP-Growth algorithm. The design decisions taken focus on simplicity, flexibility, and efficiency, ensuring that the solution is adaptable for various datasets and applications. Future enhancements could consider integration with visualization tools for a graphical representation of the derived association rules or extending support to other algorithms and analysis techniques.</p>
 
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Implementation-using-2-Hidden-Layers-network">Implementation using 2 Hidden Layers network<a class="anchor-link" href="#Implementation-using-2-Hidden-Layers-network">&#182;</a></h4>
 </div>
 </div>
 </div>
@@ -15277,19 +15283,10 @@ layer network. Run it on the MNIST dataset and report its performance.<br>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
-
-<span class="k">def</span> <span class="nf">timer_decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'The function took </span><span class="si">{</span><span class="n">end_time</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start_time</span><span class="si">}</span><span class="s1"> seconds to complete'</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">result</span>
-    <span class="k">return</span> <span class="n">wrapper</span>
+<div class=" highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 
      </div>
@@ -15297,551 +15294,6 @@ layer network. Run it on the MNIST dataset and report its performance.<br>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">struct</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="k">def</span> <span class="nf">get_acc</span><span class="p">(</span><span class="n">_y_test</span><span class="p">,</span> <span class="n">_y_pred</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">_y_test</span> <span class="o">==</span> <span class="n">_y_pred</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span> <span class="o">/</span> <span class="n">_y_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-<span class="k">def</span> <span class="nf">load_mnist</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">'train'</span><span class="p">):</span>
-    <span class="n">labels_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">'</span><span class="si">%s</span><span class="s1">-labels.idx1-ubyte'</span> <span class="o">%</span> <span class="n">kind</span><span class="p">)</span>
-    <span class="n">images_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">'</span><span class="si">%s</span><span class="s1">-images.idx3-ubyte'</span> <span class="o">%</span> <span class="n">kind</span><span class="p">)</span>
-    
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">labels_path</span><span class="p">,</span> <span class="s1">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">lbpath</span><span class="p">:</span>
-        <span class="n">magic</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s1">'&gt;II'</span><span class="p">,</span> <span class="n">lbpath</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">8</span><span class="p">))</span>
-        <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">lbpath</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
-
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">images_path</span><span class="p">,</span> <span class="s1">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">imgpath</span><span class="p">:</span>
-        <span class="n">magic</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s1">'&gt;IIII'</span><span class="p">,</span> <span class="n">imgpath</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">16</span><span class="p">))</span>
-        <span class="n">images</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">imgpath</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">),</span> <span class="mi">784</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">images</span><span class="p">,</span> <span class="n">labels</span>
-
-<span class="k">class</span> <span class="nc">NeuralNetMLP</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_hidden1</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">n_hidden2</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">minibatch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">random</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>  <span class="c1"># used to randomize weights</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_hidden1</span> <span class="o">=</span> <span class="n">n_hidden1</span>  <span class="c1"># size of the first hidden layer</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_hidden2</span> <span class="o">=</span> <span class="n">n_hidden2</span>  <span class="c1"># size of the second hidden layer</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">=</span> <span class="n">epochs</span>  <span class="c1"># number of iterations</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">eta</span> <span class="o">=</span> <span class="n">eta</span>  <span class="c1"># learning rate</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">minibatch_size</span> <span class="o">=</span> <span class="n">minibatch_size</span>  <span class="c1"># size of training batch - 1 would not work</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">w_out</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_h1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_h2</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
-    
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">onehot</span><span class="p">(</span><span class="n">_y</span><span class="p">,</span> <span class="n">_n_classes</span><span class="p">):</span>  <span class="c1"># one hot encode the input class y</span>
-        <span class="n">onehot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">_n_classes</span><span class="p">,</span> <span class="n">_y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
-        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">_y</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)):</span>
-            <span class="n">onehot</span><span class="p">[</span><span class="n">val</span><span class="p">,</span> <span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
-        <span class="k">return</span> <span class="n">onehot</span><span class="o">.</span><span class="n">T</span>
-
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">_z</span><span class="p">):</span>  <span class="c1"># Eq 1</span>
-        <span class="k">return</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">_z</span><span class="p">,</span> <span class="o">-</span><span class="mi">250</span><span class="p">,</span> <span class="mi">250</span><span class="p">)))</span>
-
-    <span class="k">def</span> <span class="nf">_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_X</span><span class="p">):</span>  <span class="c1"># Eq 2</span>
-        <span class="n">z_h1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">_X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_h1</span><span class="p">)</span>
-        <span class="n">a_h1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">z_h1</span><span class="p">)</span>
-        <span class="n">z_h2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a_h1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_h2</span><span class="p">)</span>
-        <span class="n">a_h2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">z_h2</span><span class="p">)</span>
-        <span class="n">z_out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a_h2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_out</span><span class="p">)</span>
-        <span class="n">a_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">z_out</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">z_h1</span><span class="p">,</span> <span class="n">a_h1</span><span class="p">,</span> <span class="n">z_h2</span><span class="p">,</span> <span class="n">a_h2</span><span class="p">,</span> <span class="n">z_out</span><span class="p">,</span> <span class="n">a_out</span>
-
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">compute_cost</span><span class="p">(</span><span class="n">y_enc</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>  <span class="c1"># Eq 4</span>
-        <span class="n">term1</span> <span class="o">=</span> <span class="o">-</span><span class="n">y_enc</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">output</span><span class="p">))</span>
-        <span class="n">term2</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="n">y_enc</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="n">output</span><span class="p">)</span>
-        <span class="n">cost</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">term1</span> <span class="o">-</span> <span class="n">term2</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">cost</span>
-
-    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_X</span><span class="p">):</span>
-        <span class="n">z_h1</span><span class="p">,</span> <span class="n">a_h1</span><span class="p">,</span> <span class="n">z_h2</span><span class="p">,</span> <span class="n">a_h2</span><span class="p">,</span> <span class="n">z_out</span><span class="p">,</span> <span class="n">a_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_forward</span><span class="p">(</span><span class="n">_X</span><span class="p">)</span>
-        <span class="n">ypred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">z_out</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">ypred</span>
-    
-    <span class="nd">@timer_decorator</span>
-    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_X_train</span><span class="p">,</span> <span class="n">_y_train</span><span class="p">,</span> <span class="n">_X_valid</span><span class="p">,</span> <span class="n">_y_valid</span><span class="p">):</span>
-        <span class="kn">import</span> <span class="nn">sys</span>
-        <span class="n">n_output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">_y_train</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># number of class labels</span>
-        <span class="n">n_features</span> <span class="o">=</span> <span class="n">_X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">w_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_hidden2</span><span class="p">,</span> <span class="n">n_output</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">w_h1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n_features</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_hidden1</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">w_h2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_hidden1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_hidden2</span><span class="p">))</span>
-        <span class="n">y_train_enc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">onehot</span><span class="p">(</span><span class="n">_y_train</span><span class="p">,</span> <span class="n">n_output</span><span class="p">)</span>  <span class="c1"># one-hot encode original y</span>
-        <span class="k">for</span> <span class="n">ei</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">):</span>  <span class="c1"># Ideally must shuffle at every epoch</span>
-            <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">_X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="k">for</span> <span class="n">start_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">indices</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">minibatch_size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">minibatch_size</span><span class="p">):</span>
-                <span class="n">batch_idx</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="n">start_idx</span><span class="p">:</span><span class="n">start_idx</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">minibatch_size</span><span class="p">]</span>
-                
-                <span class="n">z_h1</span><span class="p">,</span> <span class="n">a_h1</span><span class="p">,</span> <span class="n">z_h2</span><span class="p">,</span> <span class="n">a_h2</span><span class="p">,</span> <span class="n">z_out</span><span class="p">,</span> <span class="n">a_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_forward</span><span class="p">(</span><span class="n">_X_train</span><span class="p">[</span><span class="n">batch_idx</span><span class="p">])</span>  <span class="c1"># neural network model</span>
-                
-                <span class="n">sigmoid_derivative_h1</span> <span class="o">=</span> <span class="n">a_h1</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="n">a_h1</span><span class="p">)</span>  <span class="c1"># Eq 3 for first hidden layer</span>
-                <span class="n">sigmoid_derivative_h2</span> <span class="o">=</span> <span class="n">a_h2</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="n">a_h2</span><span class="p">)</span>  <span class="c1"># Eq 3 for second hidden layer</span>
-                <span class="n">delta_out</span> <span class="o">=</span> <span class="n">a_out</span> <span class="o">-</span> <span class="n">y_train_enc</span><span class="p">[</span><span class="n">batch_idx</span><span class="p">]</span>  <span class="c1"># Eq 5</span>
-                <span class="n">delta_h2</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">delta_out</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_out</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">*</span> <span class="n">sigmoid_derivative_h2</span><span class="p">)</span>  <span class="c1"># Eq 6 for second hidden layer</span>
-                <span class="n">delta_h1</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">delta_h2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_h2</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">*</span> <span class="n">sigmoid_derivative_h1</span><span class="p">)</span>  <span class="c1"># Eq 6 for first hidden layer</span>
-                <span class="n">grad_w_out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a_h2</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">delta_out</span><span class="p">)</span>  <span class="c1"># Eq 7</span>
-                <span class="n">grad_w_h2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a_h1</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">delta_h2</span><span class="p">)</span>  <span class="c1"># Eq 8 for second hidden layer</span>
-                <span class="n">grad_w_h1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">_X_train</span><span class="p">[</span><span class="n">batch_idx</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">delta_h1</span><span class="p">)</span>  <span class="c1"># Eq 8 for first hidden layer</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">w_out</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eta</span><span class="o">*</span><span class="n">grad_w_out</span>  <span class="c1"># Eq 9</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">w_h2</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eta</span><span class="o">*</span><span class="n">grad_w_h2</span>  <span class="c1"># Eq 9 for second hidden layer</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">w_h1</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eta</span><span class="o">*</span><span class="n">grad_w_h1</span>  <span class="c1"># Eq 9 for first hidden layer</span>
-
-            <span class="c1"># Evaluation after each epoch during training</span>
-            <span class="n">z_h1</span><span class="p">,</span> <span class="n">a_h1</span><span class="p">,</span> <span class="n">z_h2</span><span class="p">,</span> <span class="n">a_h2</span><span class="p">,</span> <span class="n">z_out</span><span class="p">,</span> <span class="n">a_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_forward</span><span class="p">(</span><span class="n">_X_train</span><span class="p">)</span>
-            <span class="n">cost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_cost</span><span class="p">(</span><span class="n">y_enc</span><span class="o">=</span><span class="n">y_train_enc</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">a_out</span><span class="p">)</span>
-            <span class="n">y_train_pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">_X_train</span><span class="p">)</span>  <span class="c1"># monitoring training progress through reclassification</span>
-            <span class="n">y_valid_pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">_X_valid</span><span class="p">)</span>  <span class="c1"># monitoring training progress through validation</span>
-            <span class="n">train_acc</span> <span class="o">=</span> <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">_y_train</span> <span class="o">==</span> <span class="n">y_train_pred</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span> <span class="o">/</span> <span class="n">_X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="n">valid_acc</span> <span class="o">=</span> <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">_y_valid</span> <span class="o">==</span> <span class="n">y_valid_pred</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span> <span class="o">/</span> <span class="n">_X_valid</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            
-            <span class="c1">#NOTE:: If we want to see each epoch cost and accuracy numbers use print()</span>
-            
-            <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\r</span><span class="si">%d</span><span class="s1">/</span><span class="si">%d</span><span class="s1"> | Cost: </span><span class="si">%.2f</span><span class="s1"> '</span> <span class="s1">'| Train/Valid Acc.: </span><span class="si">%.2f%%</span><span class="s1">/</span><span class="si">%.2f%%</span><span class="s1"> '</span><span class="o">%</span>
-                <span class="p">(</span><span class="n">ei</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">train_acc</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">valid_acc</span><span class="o">*</span><span class="mi">100</span><span class="p">))</span>
-            
-
-            <span class="c1">#NOTE:: To see the epoch cost and accuracy numbers in place use sys.stderr.write() </span>
-<span class="w">            </span><span class="sd">'''</span>
-<span class="sd">            sys.stderr.write('\r%d/%d | Cost: %.2f ' '| Train/Valid Acc.: %.2f%%/%.2f%% '%</span>
-<span class="sd">                (ei+1, self.epochs, cost, train_acc*100, valid_acc*100))</span>
-<span class="sd">            sys.stderr.flush()</span>
-<span class="sd">            '''</span>
-            
-        <span class="k">return</span> <span class="bp">self</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Variables we use to control training and testing parameters</span>
-<span class="n">mnist_path</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">'C:\Users\rasar_bn\JHU\Module9\mnist'</span>
-<span class="n">hidden_layer_count</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">neurons_in_layer_1</span> <span class="o">=</span> <span class="mi">784</span>
-<span class="n">neurons_in_layer_2</span> <span class="o">=</span> <span class="mi">784</span>
-<span class="n">number_of_epochs</span> <span class="o">=</span> <span class="mi">50</span>
-<span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.0001</span>
-
-<span class="c1"># Load the training set</span>
-<span class="n">X_train_mnist_double</span><span class="p">,</span> <span class="n">y_train_mnist_double</span> <span class="o">=</span> <span class="n">load_mnist</span><span class="p">(</span><span class="n">mnist_path</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">'train'</span><span class="p">)</span>
-
-<span class="c1"># Load the testing set</span>
-<span class="n">X_test_mnist_double</span><span class="p">,</span> <span class="n">y_test_mnist_double</span> <span class="o">=</span> <span class="n">load_mnist</span><span class="p">(</span><span class="n">mnist_path</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">'t10k'</span><span class="p">)</span>
-
-<span class="c1"># Verify the shapes of the loaded data</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Training set: Rows=</span><span class="si">{</span><span class="n">X_train_mnist_double</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">, Columns=</span><span class="si">{</span><span class="n">X_train_mnist_double</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Testing set: Rows=</span><span class="si">{</span><span class="n">X_test_mnist_double</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">, Columns=</span><span class="si">{</span><span class="n">X_test_mnist_double</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
-    
-<span class="c1"># Define and fit the neural network</span>
-<span class="n">nn</span> <span class="o">=</span> <span class="n">NeuralNetMLP</span><span class="p">(</span><span class="n">n_hidden1</span><span class="o">=</span><span class="n">neurons_in_layer_1</span><span class="p">,</span> <span class="n">n_hidden2</span><span class="o">=</span><span class="n">neurons_in_layer_2</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">number_of_epochs</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">,</span> <span class="n">minibatch_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="n">nn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_mnist_double</span><span class="p">[:</span><span class="mi">55000</span><span class="p">],</span> <span class="n">y_train_mnist_double</span><span class="p">[:</span><span class="mi">55000</span><span class="p">],</span> <span class="n">X_train_mnist_double</span><span class="p">[</span><span class="mi">55000</span><span class="p">:],</span> <span class="n">y_train_mnist_double</span><span class="p">[</span><span class="mi">55000</span><span class="p">:])</span> <span class="p">;</span>
-
-<span class="c1"># After fitting the model...</span>
-<span class="n">y_train_pred_double</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train_mnist_double</span><span class="p">)</span>
-<span class="n">y_test_pred_double</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_mnist_double</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"2 layer MLP Results:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Training accuracy: </span><span class="si">%.2f%%</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_train_mnist_double</span><span class="p">,</span> <span class="n">y_train_pred_double</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Test accuracy: </span><span class="si">%.2f%%</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test_mnist_double</span><span class="p">,</span> <span class="n">y_test_pred_double</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">))</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Training set: Rows=60000, Columns=784
-Testing set: Rows=10000, Columns=784
-1/50 | Cost: 70885.38 | Train/Valid Acc.: 83.99%/87.56% 
-2/50 | Cost: 53487.07 | Train/Valid Acc.: 87.76%/90.76% 
-3/50 | Cost: 45352.53 | Train/Valid Acc.: 89.56%/91.88% 
-4/50 | Cost: 40413.25 | Train/Valid Acc.: 90.53%/92.40% 
-5/50 | Cost: 36889.50 | Train/Valid Acc.: 91.37%/92.90% 
-6/50 | Cost: 34282.32 | Train/Valid Acc.: 91.92%/93.26% 
-7/50 | Cost: 32165.38 | Train/Valid Acc.: 92.33%/93.80% 
-8/50 | Cost: 30343.93 | Train/Valid Acc.: 92.84%/93.76% 
-9/50 | Cost: 28830.91 | Train/Valid Acc.: 93.11%/94.28% 
-10/50 | Cost: 27412.70 | Train/Valid Acc.: 93.45%/94.48% 
-11/50 | Cost: 26327.78 | Train/Valid Acc.: 93.74%/94.62% 
-12/50 | Cost: 25268.55 | Train/Valid Acc.: 94.07%/94.80% 
-13/50 | Cost: 24357.76 | Train/Valid Acc.: 94.27%/94.98% 
-14/50 | Cost: 23330.19 | Train/Valid Acc.: 94.55%/95.02% 
-15/50 | Cost: 22515.25 | Train/Valid Acc.: 94.74%/95.30% 
-16/50 | Cost: 21658.70 | Train/Valid Acc.: 94.95%/95.22% 
-17/50 | Cost: 20946.64 | Train/Valid Acc.: 95.17%/95.38% 
-18/50 | Cost: 20411.72 | Train/Valid Acc.: 95.22%/95.50% 
-19/50 | Cost: 19775.11 | Train/Valid Acc.: 95.46%/95.40% 
-20/50 | Cost: 19105.85 | Train/Valid Acc.: 95.63%/95.64% 
-21/50 | Cost: 18555.64 | Train/Valid Acc.: 95.81%/95.70% 
-22/50 | Cost: 18069.42 | Train/Valid Acc.: 95.89%/95.78% 
-23/50 | Cost: 17526.12 | Train/Valid Acc.: 96.03%/95.70% 
-24/50 | Cost: 16905.82 | Train/Valid Acc.: 96.17%/95.92% 
-25/50 | Cost: 16562.29 | Train/Valid Acc.: 96.29%/95.76% 
-26/50 | Cost: 16029.90 | Train/Valid Acc.: 96.47%/95.92% 
-27/50 | Cost: 15689.86 | Train/Valid Acc.: 96.53%/95.94% 
-28/50 | Cost: 15280.09 | Train/Valid Acc.: 96.61%/96.16% 
-29/50 | Cost: 14946.13 | Train/Valid Acc.: 96.72%/96.20% 
-30/50 | Cost: 14584.30 | Train/Valid Acc.: 96.84%/95.96% 
-31/50 | Cost: 14161.32 | Train/Valid Acc.: 96.98%/96.22% 
-32/50 | Cost: 13665.59 | Train/Valid Acc.: 97.12%/96.22% 
-33/50 | Cost: 13358.24 | Train/Valid Acc.: 97.16%/96.22% 
-34/50 | Cost: 13029.97 | Train/Valid Acc.: 97.27%/96.24% 
-35/50 | Cost: 12634.60 | Train/Valid Acc.: 97.41%/96.26% 
-36/50 | Cost: 12292.59 | Train/Valid Acc.: 97.48%/96.36% 
-37/50 | Cost: 12045.69 | Train/Valid Acc.: 97.57%/96.40% 
-38/50 | Cost: 11749.04 | Train/Valid Acc.: 97.61%/96.38% 
-39/50 | Cost: 11475.47 | Train/Valid Acc.: 97.71%/96.46% 
-40/50 | Cost: 11238.04 | Train/Valid Acc.: 97.79%/96.52% 
-41/50 | Cost: 10862.50 | Train/Valid Acc.: 97.86%/96.52% 
-42/50 | Cost: 10657.34 | Train/Valid Acc.: 97.93%/96.34% 
-43/50 | Cost: 10412.03 | Train/Valid Acc.: 97.97%/96.58% 
-44/50 | Cost: 10200.81 | Train/Valid Acc.: 98.04%/96.44% 
-45/50 | Cost: 9999.08 | Train/Valid Acc.: 98.09%/96.58% 
-46/50 | Cost: 9743.53 | Train/Valid Acc.: 98.14%/96.56% 
-47/50 | Cost: 9512.57 | Train/Valid Acc.: 98.20%/96.58% 
-48/50 | Cost: 9263.32 | Train/Valid Acc.: 98.25%/96.66% 
-49/50 | Cost: 9130.57 | Train/Valid Acc.: 98.30%/96.50% 
-50/50 | Cost: 8934.23 | Train/Valid Acc.: 98.32%/96.56% 
-The function took 484.9684805870056 seconds to complete
-
-2 layer MLP Results:
-Training accuracy: 98.17%
-Test accuracy: 95.36%
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Implementation-using-Single-Layer-network">Implementation using Single Layer network<a class="anchor-link" href="#Implementation-using-Single-Layer-network">&#182;</a></h4>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">struct</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="k">def</span> <span class="nf">get_acc</span><span class="p">(</span><span class="n">_y_test</span><span class="p">,</span> <span class="n">_y_pred</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">_y_test</span> <span class="o">==</span> <span class="n">_y_pred</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span> <span class="o">/</span> <span class="n">_y_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-<span class="k">def</span> <span class="nf">load_mnist</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">'train'</span><span class="p">):</span>
-    <span class="n">labels_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">'</span><span class="si">%s</span><span class="s1">-labels.idx1-ubyte'</span> <span class="o">%</span> <span class="n">kind</span><span class="p">)</span>
-    <span class="n">images_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">'</span><span class="si">%s</span><span class="s1">-images.idx3-ubyte'</span> <span class="o">%</span> <span class="n">kind</span><span class="p">)</span>
-    
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">labels_path</span><span class="p">,</span> <span class="s1">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">lbpath</span><span class="p">:</span>
-        <span class="n">magic</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s1">'&gt;II'</span><span class="p">,</span> <span class="n">lbpath</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">8</span><span class="p">))</span>
-        <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">lbpath</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
-
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">images_path</span><span class="p">,</span> <span class="s1">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">imgpath</span><span class="p">:</span>
-        <span class="n">magic</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s1">'&gt;IIII'</span><span class="p">,</span> <span class="n">imgpath</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">16</span><span class="p">))</span>
-        <span class="n">images</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">imgpath</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">),</span> <span class="mi">784</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">images</span><span class="p">,</span> <span class="n">labels</span>
-
-<span class="k">class</span> <span class="nc">NeuralNetMLP</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_hidden</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">minibatch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">random</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>  <span class="c1"># used to randomize weights</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_hidden</span> <span class="o">=</span> <span class="n">n_hidden</span>  <span class="c1"># size of the hidden layer</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">=</span> <span class="n">epochs</span>  <span class="c1"># number of iterations</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">eta</span> <span class="o">=</span> <span class="n">eta</span>  <span class="c1"># learning rate</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">minibatch_size</span> <span class="o">=</span> <span class="n">minibatch_size</span>  <span class="c1"># size of training batch - 1 would not work</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">w_out</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_h</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
-    
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">onehot</span><span class="p">(</span><span class="n">_y</span><span class="p">,</span> <span class="n">_n_classes</span><span class="p">):</span>  <span class="c1"># one hot encode the input class y</span>
-        <span class="n">onehot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">_n_classes</span><span class="p">,</span> <span class="n">_y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
-        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">_y</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)):</span>
-            <span class="n">onehot</span><span class="p">[</span><span class="n">val</span><span class="p">,</span> <span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
-        <span class="k">return</span> <span class="n">onehot</span><span class="o">.</span><span class="n">T</span>
-    
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">_z</span><span class="p">):</span>  <span class="c1"># Eq 1</span>
-        <span class="k">return</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">_z</span><span class="p">,</span> <span class="o">-</span><span class="mi">250</span><span class="p">,</span> <span class="mi">250</span><span class="p">)))</span>
-
-    <span class="k">def</span> <span class="nf">_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_X</span><span class="p">):</span>  <span class="c1"># Eq 2</span>
-        <span class="n">z_h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">_X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_h</span><span class="p">)</span>
-        <span class="n">a_h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">z_h</span><span class="p">)</span>
-        <span class="n">z_out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a_h</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_out</span><span class="p">)</span>
-        <span class="n">a_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">z_out</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">z_h</span><span class="p">,</span> <span class="n">a_h</span><span class="p">,</span> <span class="n">z_out</span><span class="p">,</span> <span class="n">a_out</span>
-
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">compute_cost</span><span class="p">(</span><span class="n">y_enc</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>  <span class="c1"># Eq 4</span>
-        <span class="n">term1</span> <span class="o">=</span> <span class="o">-</span><span class="n">y_enc</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">output</span><span class="p">))</span>
-        <span class="n">term2</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="n">y_enc</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="n">output</span><span class="p">)</span>
-        <span class="n">cost</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">term1</span> <span class="o">-</span> <span class="n">term2</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">cost</span>
-
-    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_X</span><span class="p">):</span>
-        <span class="n">z_h</span><span class="p">,</span> <span class="n">a_h</span><span class="p">,</span> <span class="n">z_out</span><span class="p">,</span> <span class="n">a_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_forward</span><span class="p">(</span><span class="n">_X</span><span class="p">)</span>
-        <span class="n">ypred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">z_out</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">ypred</span>
-    
-    <span class="nd">@timer_decorator</span>
-    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_X_train</span><span class="p">,</span> <span class="n">_y_train</span><span class="p">,</span> <span class="n">_X_valid</span><span class="p">,</span> <span class="n">_y_valid</span><span class="p">):</span>
-        <span class="kn">import</span> <span class="nn">sys</span>
-        <span class="n">n_output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">_y_train</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># number of class labels</span>
-        <span class="n">n_features</span> <span class="o">=</span> <span class="n">_X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">w_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_hidden</span><span class="p">,</span> <span class="n">n_output</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">w_h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n_features</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_hidden</span><span class="p">))</span>
-        <span class="n">y_train_enc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">onehot</span><span class="p">(</span><span class="n">_y_train</span><span class="p">,</span> <span class="n">n_output</span><span class="p">)</span>  <span class="c1"># one-hot encode original y</span>
-        <span class="k">for</span> <span class="n">ei</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">):</span>  <span class="c1"># Ideally must shuffle at every epoch</span>
-            <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">_X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="k">for</span> <span class="n">start_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">indices</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">minibatch_size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">minibatch_size</span><span class="p">):</span>
-                <span class="n">batch_idx</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="n">start_idx</span><span class="p">:</span><span class="n">start_idx</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">minibatch_size</span><span class="p">]</span>
-                
-                <span class="n">z_h</span><span class="p">,</span> <span class="n">a_h</span><span class="p">,</span> <span class="n">z_out</span><span class="p">,</span> <span class="n">a_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_forward</span><span class="p">(</span><span class="n">_X_train</span><span class="p">[</span><span class="n">batch_idx</span><span class="p">])</span>  <span class="c1"># neural network model</span>
-                
-                <span class="n">sigmoid_derivative_h</span> <span class="o">=</span> <span class="n">a_h</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="n">a_h</span><span class="p">)</span>  <span class="c1"># Eq 3</span>
-                <span class="n">delta_out</span> <span class="o">=</span> <span class="n">a_out</span> <span class="o">-</span> <span class="n">y_train_enc</span><span class="p">[</span><span class="n">batch_idx</span><span class="p">]</span>  <span class="c1"># Eq 5</span>
-                <span class="n">delta_h</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">delta_out</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_out</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">*</span> <span class="n">sigmoid_derivative_h</span><span class="p">)</span>  <span class="c1"># Eq 6</span>
-                <span class="n">grad_w_out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a_h</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">delta_out</span><span class="p">)</span>  <span class="c1"># Eq 7</span>
-                <span class="n">grad_w_h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">_X_train</span><span class="p">[</span><span class="n">batch_idx</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">delta_h</span><span class="p">)</span>  <span class="c1"># Eq 8</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">w_out</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eta</span><span class="o">*</span><span class="n">grad_w_out</span>  <span class="c1"># Eq 9</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">w_h</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eta</span><span class="o">*</span><span class="n">grad_w_h</span>  <span class="c1"># Eq 9</span>
-
-            <span class="c1"># Evaluation after each epoch during training</span>
-            <span class="n">z_h</span><span class="p">,</span> <span class="n">a_h</span><span class="p">,</span> <span class="n">z_out</span><span class="p">,</span> <span class="n">a_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_forward</span><span class="p">(</span><span class="n">_X_train</span><span class="p">)</span>
-            <span class="n">cost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_cost</span><span class="p">(</span><span class="n">y_enc</span><span class="o">=</span><span class="n">y_train_enc</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">a_out</span><span class="p">)</span>
-            <span class="n">y_train_pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">_X_train</span><span class="p">)</span>  <span class="c1"># monitoring training progress through reclassification</span>
-            <span class="n">y_valid_pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">_X_valid</span><span class="p">)</span>  <span class="c1"># monitoring training progress through validation</span>
-            <span class="n">train_acc</span> <span class="o">=</span> <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">_y_train</span> <span class="o">==</span> <span class="n">y_train_pred</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span> <span class="o">/</span> <span class="n">_X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="n">valid_acc</span> <span class="o">=</span> <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">_y_valid</span> <span class="o">==</span> <span class="n">y_valid_pred</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span> <span class="o">/</span> <span class="n">_X_valid</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            
-            <span class="c1">#NOTE:: If we want to see each epoch cost and accuracy numbers use print()</span>
-            
-            <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\r</span><span class="si">%d</span><span class="s1">/</span><span class="si">%d</span><span class="s1"> | Cost: </span><span class="si">%.2f</span><span class="s1"> '</span> <span class="s1">'| Train/Valid Acc.: </span><span class="si">%.2f%%</span><span class="s1">/</span><span class="si">%.2f%%</span><span class="s1"> '</span><span class="o">%</span>
-                <span class="p">(</span><span class="n">ei</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">train_acc</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">valid_acc</span><span class="o">*</span><span class="mi">100</span><span class="p">))</span>
-            
-
-            <span class="c1">#NOTE:: To see the epoch cost and accuracy numbers in place use sys.stderr.write() </span>
-<span class="w">            </span><span class="sd">'''</span>
-<span class="sd">            sys.stderr.write('\r%d/%d | Cost: %.2f ' '| Train/Valid Acc.: %.2f%%/%.2f%% '%</span>
-<span class="sd">                (ei+1, self.epochs, cost, train_acc*100, valid_acc*100))</span>
-<span class="sd">            sys.stderr.flush()</span>
-<span class="sd">            '''</span>
-            
-        <span class="k">return</span> <span class="bp">self</span>
-    
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Variables used to control training and testing parameters</span>
-<span class="n">mnist_path</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">'C:\Users\rasar_bn\JHU\Module9\mnist'</span>
-<span class="n">hidden_layer_count</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">neurons_in_layer_1</span> <span class="o">=</span> <span class="mi">784</span>
-<span class="n">number_of_epochs</span> <span class="o">=</span> <span class="mi">50</span>
-<span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.0001</span>
-
-<span class="c1"># Load the training set</span>
-<span class="n">X_train_mnist_single</span><span class="p">,</span> <span class="n">y_train_mnist_single</span> <span class="o">=</span> <span class="n">load_mnist</span><span class="p">(</span><span class="n">mnist_path</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">'train'</span><span class="p">)</span>
-
-<span class="c1"># Load the testing set</span>
-<span class="n">X_test_mnist_single</span><span class="p">,</span> <span class="n">y_test_mnist_single</span> <span class="o">=</span> <span class="n">load_mnist</span><span class="p">(</span><span class="n">mnist_path</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">'t10k'</span><span class="p">)</span>
-
-<span class="c1"># Verify the shapes of the loaded data</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Training set: Rows=</span><span class="si">{</span><span class="n">X_train_mnist_single</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">, Columns=</span><span class="si">{</span><span class="n">X_train_mnist_single</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Testing set: Rows=</span><span class="si">{</span><span class="n">X_test_mnist_single</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">, Columns=</span><span class="si">{</span><span class="n">X_test_mnist_single</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
-
-<span class="c1"># Define and fit the neural network</span>
-<span class="n">nn</span> <span class="o">=</span> <span class="n">NeuralNetMLP</span><span class="p">(</span><span class="n">n_hidden</span><span class="o">=</span><span class="n">neurons_in_layer_1</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">number_of_epochs</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">,</span> <span class="n">minibatch_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="n">nn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_mnist_single</span><span class="p">[:</span><span class="mi">55000</span><span class="p">],</span> <span class="n">y_train_mnist_single</span><span class="p">[:</span><span class="mi">55000</span><span class="p">],</span> <span class="n">X_train_mnist_single</span><span class="p">[</span><span class="mi">55000</span><span class="p">:],</span> <span class="n">y_train_mnist_single</span><span class="p">[</span><span class="mi">55000</span><span class="p">:])</span> <span class="p">;</span>
-
-<span class="c1"># After fitting the model...</span>
-<span class="n">y_train_pred_single</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train_mnist_single</span><span class="p">)</span>
-<span class="n">y_test_pred_single</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_mnist_single</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"1 layer MLP Results:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Training accuracy: </span><span class="si">%.2f%%</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_train_mnist_single</span><span class="p">,</span> <span class="n">y_train_pred_single</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Test accuracy: </span><span class="si">%.2f%%</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test_mnist_single</span><span class="p">,</span> <span class="n">y_test_pred_single</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">))</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Training set: Rows=60000, Columns=784
-Testing set: Rows=10000, Columns=784
-1/50 | Cost: 53208.37 | Train/Valid Acc.: 86.50%/88.90% 
-2/50 | Cost: 42301.61 | Train/Valid Acc.: 89.77%/91.32% 
-3/50 | Cost: 37063.22 | Train/Valid Acc.: 91.04%/92.68% 
-4/50 | Cost: 33611.97 | Train/Valid Acc.: 91.97%/93.34% 
-5/50 | Cost: 31157.84 | Train/Valid Acc.: 92.54%/93.38% 
-6/50 | Cost: 29260.47 | Train/Valid Acc.: 93.05%/94.04% 
-7/50 | Cost: 27410.05 | Train/Valid Acc.: 93.60%/94.24% 
-8/50 | Cost: 26012.20 | Train/Valid Acc.: 94.01%/94.50% 
-9/50 | Cost: 24951.39 | Train/Valid Acc.: 94.20%/94.76% 
-10/50 | Cost: 23689.55 | Train/Valid Acc.: 94.53%/95.08% 
-11/50 | Cost: 22659.51 | Train/Valid Acc.: 94.81%/95.16% 
-12/50 | Cost: 21849.40 | Train/Valid Acc.: 95.05%/95.42% 
-13/50 | Cost: 21123.78 | Train/Valid Acc.: 95.28%/95.50% 
-14/50 | Cost: 20264.84 | Train/Valid Acc.: 95.49%/95.58% 
-15/50 | Cost: 19440.20 | Train/Valid Acc.: 95.70%/95.62% 
-16/50 | Cost: 18737.63 | Train/Valid Acc.: 95.89%/95.62% 
-17/50 | Cost: 18108.91 | Train/Valid Acc.: 96.07%/95.64% 
-18/50 | Cost: 17616.35 | Train/Valid Acc.: 96.17%/95.98% 
-19/50 | Cost: 17158.88 | Train/Valid Acc.: 96.30%/96.00% 
-20/50 | Cost: 16477.96 | Train/Valid Acc.: 96.50%/95.82% 
-21/50 | Cost: 16011.20 | Train/Valid Acc.: 96.58%/96.02% 
-22/50 | Cost: 15601.78 | Train/Valid Acc.: 96.71%/96.24% 
-23/50 | Cost: 15168.08 | Train/Valid Acc.: 96.86%/96.20% 
-24/50 | Cost: 14588.96 | Train/Valid Acc.: 97.01%/96.16% 
-25/50 | Cost: 14278.52 | Train/Valid Acc.: 97.09%/96.08% 
-26/50 | Cost: 13810.04 | Train/Valid Acc.: 97.21%/96.26% 
-27/50 | Cost: 13386.24 | Train/Valid Acc.: 97.31%/96.10% 
-28/50 | Cost: 13194.12 | Train/Valid Acc.: 97.41%/96.32% 
-29/50 | Cost: 12784.41 | Train/Valid Acc.: 97.46%/96.38% 
-30/50 | Cost: 12516.02 | Train/Valid Acc.: 97.55%/96.40% 
-31/50 | Cost: 12239.04 | Train/Valid Acc.: 97.58%/96.30% 
-32/50 | Cost: 11810.56 | Train/Valid Acc.: 97.73%/96.52% 
-33/50 | Cost: 11536.43 | Train/Valid Acc.: 97.81%/96.52% 
-34/50 | Cost: 11170.69 | Train/Valid Acc.: 97.93%/96.50% 
-35/50 | Cost: 10954.63 | Train/Valid Acc.: 97.99%/96.36% 
-36/50 | Cost: 10655.06 | Train/Valid Acc.: 98.04%/96.52% 
-37/50 | Cost: 10421.57 | Train/Valid Acc.: 98.10%/96.62% 
-38/50 | Cost: 10218.86 | Train/Valid Acc.: 98.16%/96.56% 
-39/50 | Cost: 10006.45 | Train/Valid Acc.: 98.21%/96.54% 
-40/50 | Cost: 9718.76 | Train/Valid Acc.: 98.30%/96.60% 
-41/50 | Cost: 9527.58 | Train/Valid Acc.: 98.36%/96.66% 
-42/50 | Cost: 9252.75 | Train/Valid Acc.: 98.40%/96.54% 
-43/50 | Cost: 9142.44 | Train/Valid Acc.: 98.43%/96.70% 
-44/50 | Cost: 8910.63 | Train/Valid Acc.: 98.47%/96.56% 
-45/50 | Cost: 8698.23 | Train/Valid Acc.: 98.52%/96.68% 
-46/50 | Cost: 8441.51 | Train/Valid Acc.: 98.56%/96.66% 
-47/50 | Cost: 8310.78 | Train/Valid Acc.: 98.62%/96.68% 
-48/50 | Cost: 8157.00 | Train/Valid Acc.: 98.64%/96.68% 
-49/50 | Cost: 7949.06 | Train/Valid Acc.: 98.69%/96.70% 
-50/50 | Cost: 7722.67 | Train/Valid Acc.: 98.73%/96.72% 
-The function took 238.49109506607056 seconds to complete
-
-1 layer MLP Results:
-Training accuracy: 98.56%
-Test accuracy: 95.68%
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Results">Results<a class="anchor-link" href="#Results">&#182;</a></h4><p>2 layer MLP<br>
-Parameters:<br>
-hidden_layer_count = 2<br>
-neurons_in_layer_1 = 784<br>
-neurons_in_layer_2 = 784<br>
-number_of_epochs = 50<br>
-learning_rate = 0.0001</p>
-<p>Training accuracy: 98.17%<br>
-Test accuracy: 95.36%<br>
-The function took 484.9684805870056 seconds to complete</p>
-<p>1 layer MLP<br>
-Parameters:<br>
-hidden_layer_count = 1<br>
-neurons_in_layer_1 = 784<br>
-number_of_epochs = 50<br>
-learning_rate = 0.0001</p>
-<p>Training accuracy: 98.56%<br>
-Test accuracy: 95.68%<br>
-The function took 238.49109506607056 seconds to complete</p>
-<p>In summary, while both models performed well, the 1 layer MLP was faster to train and achieved slightly higher accuracy on both the training and test sets. In this specific case, adding more layers to a neural network did not result in improved performance, therefore  the simpler 1 layer MLP might be a better choice due to its efficiency and performance.</p>
-
-</div>
-</div>
-</div>
 </div>
 </body>
 
